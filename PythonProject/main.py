@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import logging
+import asyncio
 from dotenv import load_dotenv
 import os
 from openai import OpenAI
@@ -33,12 +34,16 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    embed = discord.Embed(
-        title="Welcome!",
-        description=f"Welcome to the server, {member.name}!",
-        color=discord.Color.green()
-    )
-    await member.send(embed=embed)
+    await asyncio.sleep(1)  # wait 1 second
+    try:
+        embed = discord.Embed(
+            title="Welcome!",
+            description=f"Welcome to the server, {member.name}!",
+            color=discord.Color.green()
+        )
+        await member.send(embed=embed)
+    except Exception:
+        pass  # ignore errors if DMs are blocked
 
 @bot.event
 async def on_message(message):
@@ -152,3 +157,4 @@ Winner: Character X
 # =========================
 
 bot.run(DISCORD_TOKEN, log_handler=handler, log_level=logging.DEBUG)
+
